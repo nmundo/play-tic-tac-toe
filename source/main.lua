@@ -14,6 +14,32 @@ gridSprite:setCenter(0, 0)
 gridSprite:moveTo(40, 40)
 gridSprite:add()
 
+local boardState = table.create(9, 0)
+boardState[1] = 'X'
+boardState[2] = 'O'
+boardState[3] = 'X'
+boardState[4] = 'O'
+boardState[5] = 'X'
+boardState[6] = 'O'
+boardState[7] = 'X'
+boardState[8] = 'O'
+boardState[9] = 'X'
+
+function grid:drawCell(section, row, column, selected, x, y, width, height)
+    local cellState = boardState[(row - 1) * 3 + column]
+    if selected then
+        gfx.fillRect(x, y, width, height)
+        gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+    else
+        gfx.drawRect(x, y, width, height)
+        gfx.setImageDrawMode(gfx.kDrawModeCopy)
+    end
+
+    local fontHeight = gfx.getSystemFont():getHeight()
+    if cellState == 'X' or cellState == 'O' then
+        gfx.drawTextInRect("*"..cellState.."*", x, y + (height / 2 - fontHeight / 2) + 2, width, height, nil, nil, kTextAlignment.center)
+    end
+end
 
 function pd.update()
     if pd.buttonJustPressed(pd.kButtonUp) then
