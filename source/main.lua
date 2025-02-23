@@ -15,15 +15,8 @@ gridSprite:moveTo(40, 40)
 gridSprite:add()
 
 local boardState = table.create(9, 0)
-boardState[1] = 'X'
-boardState[2] = 'O'
-boardState[3] = 'X'
-boardState[4] = 'O'
-boardState[5] = 'X'
-boardState[6] = 'O'
-boardState[7] = 'X'
-boardState[8] = 'O'
-boardState[9] = 'X'
+
+local currentPlayer = 'X'
 
 function grid:drawCell(section, row, column, selected, x, y, width, height)
     local cellState = boardState[(row - 1) * 3 + column]
@@ -50,6 +43,13 @@ function pd.update()
         grid:selectPreviousColumn(false)
     elseif pd.buttonJustPressed(pd.kButtonRight) then
         grid:selectNextColumn(false)
+    elseif pd.buttonJustPressed(pd.kButtonA) then
+        local section, selectedRow, selectedColumn = grid:getSelection()
+        local cellIndex = ((selectedRow - 1) * 3) + selectedColumn
+        if boardState[cellIndex] == nil then
+            boardState[cellIndex] = currentPlayer
+            currentPlayer = currentPlayer == 'X' and 'O' or 'X'
+        end
     end
 
     local gridImage = gfx.image.new(154, 154)
